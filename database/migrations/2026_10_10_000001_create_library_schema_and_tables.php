@@ -128,12 +128,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP TABLE IF EXISTS library.loan_item CASCADE;');
-        DB::statement('DROP TABLE IF EXISTS library.loan CASCADE;');
-        DB::statement('DROP TABLE IF EXISTS library."user" CASCADE;');
-        DB::statement('DROP TABLE IF EXISTS library.member CASCADE;');
-        DB::statement('DROP TABLE IF EXISTS library.book CASCADE;');
-        DB::statement('DROP TABLE IF EXISTS library.category CASCADE;');
-        DB::statement('DROP SCHEMA IF EXISTS library CASCADE;');
+        DB::statement('DROP TABLE IF EXISTS library.loan_item RESTRICT;');
+        DB::statement('DROP TABLE IF EXISTS library.loan RESTRICT;');
+        DB::statement('DROP TABLE IF EXISTS library."user" RESTRICT;');
+        DB::statement('DROP TABLE IF EXISTS library.member RESTRICT;');
+        DB::statement('DROP TABLE IF EXISTS library.book RESTRICT;');
+        DB::statement('DROP TABLE IF EXISTS library.category RESTRICT;');
     }
 };
