@@ -1,10 +1,9 @@
-# Multi-stage Dockerfile para ejecución autónoma sin requerir vendor previo en el host
+# Multi-stage Dockerfile para ejecución autónoma sin requerir dependencias en el host
 
 FROM composer:2.8.2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install \
-    --no-dev \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
@@ -18,12 +17,12 @@ RUN apk add --no-cache curl
 # Copiar el código fuente completo
 COPY . .
 
-# Copiar las dependencias instaladas de vendor
+# Copiar las dependencias instaladas de vendor (incluyendo dependencias de test)
 COPY --from=vendor /app/vendor ./vendor
 
 # Generar el autoload definitivo incluyendo el namespace Library\ mapeado a src/
 COPY --from=composer:2.8.2 /usr/bin/composer /usr/bin/composer
-RUN composer dump-autoload --optimize --no-dev
+RUN composer dump-autoload --optimize
 
 EXPOSE 8000
 

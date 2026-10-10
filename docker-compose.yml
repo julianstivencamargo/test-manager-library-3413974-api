@@ -1,13 +1,30 @@
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: manager-library-api
     ports:
       - "8000:8000"
     volumes:
       - .:/app
+      - /app/vendor
     environment:
       - APP_NAME=ManagerLibrary
       - APP_ENV=local
       - APP_DEBUG=true
       - APP_URL=http://localhost:8000
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: manager-library-test
+    volumes:
+      - .:/app
+      - /app/vendor
+    environment:
+      - APP_NAME=ManagerLibrary
+      - APP_ENV=testing
+      - APP_DEBUG=true
+    command: ["php", "artisan", "test", "tests/Feature/HealthCheckTest.php"]
