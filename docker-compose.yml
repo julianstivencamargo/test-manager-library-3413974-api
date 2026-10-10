@@ -1,5 +1,23 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: manager-library-db
+    environment:
+      POSTGRES_DB: manager_library
+      POSTGRES_USER: library_user
+      POSTGRES_PASSWORD: library_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U library_user -d manager_library"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+
   api:
+    image: test-manager-library-api:t02
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,8 +32,19 @@ services:
       - APP_ENV=local
       - APP_DEBUG=true
       - APP_URL=http://localhost:8000
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=manager_library
+      - DB_USERNAME=library_user
+      - DB_PASSWORD=library_secret
+      - DB_SCHEMA=library
+    depends_on:
+      db:
+        condition: service_healthy
 
   test:
+    image: test-manager-library-api:t02
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,4 +56,17 @@ services:
       - APP_NAME=ManagerLibrary
       - APP_ENV=testing
       - APP_DEBUG=true
-    command: ["php", "artisan", "test", "tests/Feature/HealthCheckTest.php"]
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=manager_library
+      - DB_USERNAME=library_user
+      - DB_PASSWORD=library_secret
+      - DB_SCHEMA=library
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["php", "artisan", "test"]
+
+volumes:
+  db_data:

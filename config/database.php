@@ -93,7 +93,7 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
+            'search_path' => env('DB_SCHEMA', 'library'),
             'sslmode' => 'prefer',
         ],
 
@@ -126,7 +126,7 @@ return [
     */
 
     'migrations' => [
-        'table' => 'migrations',
+        'table' => 'public.migrations',
         'update_date_on_publish' => true,
     ],
 

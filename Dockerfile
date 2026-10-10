@@ -12,7 +12,9 @@ RUN composer install \
 FROM php:8.3-cli-alpine
 WORKDIR /app
 
-RUN apk add --no-cache curl
+# Instalar curl y librerías de postgresql para pdo_pgsql
+RUN apk add --no-cache curl postgresql-dev \
+    && docker-php-ext-install pdo_pgsql
 
 # Copiar el código fuente completo
 COPY . .
