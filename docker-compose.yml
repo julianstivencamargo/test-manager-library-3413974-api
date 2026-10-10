@@ -32,6 +32,7 @@ services:
       - APP_ENV=local
       - APP_DEBUG=true
       - APP_URL=http://localhost:8000
+      - APP_KEY=base64:NaGBZTwt+FqDzQFJpPSz1HMoEGLK7+0YwxXGas3sLd8=
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432
@@ -56,6 +57,7 @@ services:
       - APP_NAME=ManagerLibrary
       - APP_ENV=testing
       - APP_DEBUG=true
+      - APP_KEY=base64:2fl+Ktvkfl+Fuz4Qp/1SeEuLTUkgSQ+IjEGkk2jRmqk=
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432

@@ -26,6 +26,12 @@ COPY --from=vendor /app/vendor ./vendor
 COPY --from=composer:2.8.2 /usr/bin/composer /usr/bin/composer
 RUN composer dump-autoload --optimize
 
+# Entrypoint: deriva .env desde .env.example y genera APP_KEY local en clones limpios.
+# Se instala fuera de /app (montado como volumen) y se normalizan finales de línea CRLF de Windows.
+COPY docker/entrypoint.sh /usr/local/bin/ml-entrypoint
+RUN sed -i 's/\r$//' /usr/local/bin/ml-entrypoint && chmod +x /usr/local/bin/ml-entrypoint
+
 EXPOSE 8000
 
+ENTRYPOINT ["ml-entrypoint"]
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

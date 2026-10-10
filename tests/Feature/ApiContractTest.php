@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\User;
 use Database\Seeders\AdminUserSeeder;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -15,6 +16,9 @@ use Tests\TestCase;
 
 class ApiContractTest extends TestCase
 {
+    // Cada prueba corre en una transacción revertida: no deja datos en la base de demostración (§5.4).
+    use DatabaseTransactions;
+
     private string $adminToken;
     private string $librarianToken;
     private User $adminUser;

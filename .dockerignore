@@ -1,0 +1,24 @@
+# Archivos de entorno locales: nunca deben copiarse dentro de la imagen.
+# Solo .env.example (plantilla sin secretos) entra en la imagen.
+.env
+.env.*
+!.env.example
+
+# Control de versiones y herramientas locales
+.git
+.gitattributes
+.idea
+.vscode
+
+# Dependencias y artefactos que se generan dentro del contenedor
+vendor
+node_modules
+.phpunit.cache
+.phpunit.result.cache
+
+# Logs y caches locales
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*.php
+bootstrap/cache/*.php
